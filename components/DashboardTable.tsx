@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Clock, CheckCircle2, Circle, FileText, Filter } from "lucide-react";
 
@@ -17,9 +18,15 @@ type Issue = {
 };
 
 export default function DashboardTable({ initialIssues }: { initialIssues: Issue[] }) {
+  const router = useRouter();
   const [issues, setIssues] = useState<Issue[]>(initialIssues);
   const [propertyFilter, setPropertyFilter] = useState("");
   const [urgencyFilter, setUrgencyFilter] = useState("");
+
+  // Sync state if server re-fetches (e.g. via router.refresh)
+  useEffect(() => {
+    setIssues(initialIssues);
+  }, [initialIssues]);
 
   const updateStatus = async (id: string, newStatus: string) => {
     // Optimistic UI update
@@ -33,6 +40,8 @@ export default function DashboardTable({ initialIssues }: { initialIssues: Issue
       
     if (error) {
       alert("Failed to update status: " + error.message);
+    } else {
+      router.refresh(); // Tells Next.js to cleanly re-fetch server data so the top stats bar updates
     }
   };
 

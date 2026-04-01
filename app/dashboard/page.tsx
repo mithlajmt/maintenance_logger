@@ -47,14 +47,21 @@ export default async function DashboardPage() {
           </div>
           
           {/* Quick Stats Cards */}
-          <div className="bg-white px-5 py-3 rounded-2xl shadow-sm border border-gray-200 flex items-center gap-8 shrink-0">
+          <div className="bg-white px-5 py-3 rounded-2xl shadow-sm border border-gray-200 flex flex-wrap items-center gap-6 md:gap-8 shrink-0">
              <div>
-                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Total Open</p>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Open</p>
                 <p className="text-2xl font-black text-gray-900">
-                  {issues?.filter(i => i.status !== 'Resolved').length || 0}
+                  {issues?.filter(i => i.status === 'Open').length || 0}
                 </p>
              </div>
-             <div className="w-px h-10 bg-gray-100"></div>
+             <div className="w-px h-10 bg-gray-100 hidden sm:block"></div>
+             <div>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">In Progress</p>
+                <p className="text-2xl font-black text-blue-600">
+                  {issues?.filter(i => i.status === 'In Progress').length || 0}
+                </p>
+             </div>
+             <div className="w-px h-10 bg-gray-100 hidden sm:block"></div>
              <div>
                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Resolved</p>
                 <p className="text-2xl font-black text-green-500">
